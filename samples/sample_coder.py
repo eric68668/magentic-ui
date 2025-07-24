@@ -17,7 +17,16 @@ async def main() -> None:
         help="Directory where coder will save files",
     )
     args = parser.parse_args()
-    model_client = OpenAIChatCompletionClient(model="gpt-4o")
+
+    # LLM_MODEL_NAME_TEAM = gpt-4o-2024-08-06
+    # LLM_API_KEY_TEAM = sk-5d0c421b87724cdd883cfa8e883998da
+    # LLM_BASE_URL_TEAM = https://matrixllm.alipay.com/v1
+
+    model_client = OpenAIChatCompletionClient(
+        model="gpt-4o-2024-08-06",
+        base_url="https://matrixllm.alipay.com/v1",
+        api_key="sk-5d0c421b87724cdd883cfa8e883998da",
+    )
 
     termination = TextMentionTermination("EXITT")
 

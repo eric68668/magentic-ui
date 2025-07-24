@@ -22,6 +22,9 @@ def check_docker_running() -> bool:
         client.ping()  # type: ignore
         return True
     except (DockerException, ConnectionError):
+        import traceback
+
+        traceback.print_exc()
         return False
 
 

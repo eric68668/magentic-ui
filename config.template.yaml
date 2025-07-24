@@ -1,0 +1,23 @@
+# config.yaml
+
+######################################
+# Default OpenAI model configuration #
+######################################
+configs: &client
+  provider: autogen_ext.models.openai.OpenAIChatCompletionClient
+  config:
+    model: xxx
+    api_key: xxx
+    base_url: xxx
+    max_retries: 10
+
+##########################
+# Clients for each agent #
+##########################
+
+model_client_configs:
+  orchestrator: *client
+  coder: *client
+  web_surfer: *client
+  file_surfer: *client
+  action_guard: *client

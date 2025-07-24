@@ -1130,9 +1130,11 @@ class WebSurfer(BaseChatAgent, Component[WebSurferConfig]):
                 webpage_text=webpage_text,
                 url=self._page.url,
                 visible_targets=visible_targets,
-                consider_screenshot="Consider the following screenshot of a web browser,"
-                if self.is_multimodal
-                else "Consider the following webpage",
+                consider_screenshot=(
+                    "Consider the following screenshot of a web browser,"
+                    if self.is_multimodal
+                    else "Consider the following webpage"
+                ),
                 other_targets_str=other_targets_str,
                 focused_hint=focused_hint,
                 tool_names=tool_names,
@@ -1144,9 +1146,11 @@ class WebSurfer(BaseChatAgent, Component[WebSurferConfig]):
                 webpage_text=webpage_text,
                 url=self._page.url,
                 visible_targets=visible_targets,
-                consider_screenshot="Consider the following screenshot of a web browser,"
-                if self.is_multimodal
-                else "Consider the following webpage",
+                consider_screenshot=(
+                    "Consider the following screenshot of a web browser,"
+                    if self.is_multimodal
+                    else "Consider the following webpage"
+                ),
                 other_targets_str=other_targets_str,
                 focused_hint=focused_hint,
             ).strip()
@@ -1201,7 +1205,7 @@ class WebSurfer(BaseChatAgent, Component[WebSurferConfig]):
                 "o4",
             ]:
                 create_args = {
-                    "tool_choice": "required",
+                    # "tool_choice": "required",
                 }
                 if self.multiple_tools_per_call:
                     create_args["parallel_tool_calls"] = True

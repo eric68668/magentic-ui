@@ -68,5 +68,6 @@
     "prismjs": "1.30.0",
     "cookie": "0.7.0",
     "base-x": "3.0.11"
-  }
+  },
+  "repository": "https://github.com/microsoft/magentic-ui.git"
 }
