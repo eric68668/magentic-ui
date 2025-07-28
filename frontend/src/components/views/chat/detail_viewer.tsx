@@ -1,4 +1,4 @@
-import React, { useState, useRef, lazy, Suspense } from "react";
+import { RcFile } from "antd/es/upload";
 import {
   ChevronLeft,
   ChevronRight,
@@ -6,13 +6,13 @@ import {
   MousePointerClick,
   X,
 } from "lucide-react";
+import React, { lazy, Suspense, useRef, useState } from "react";
+import { useSettingsStore } from "../../store";
+import { IPlan } from "../../types/plan";
 import { ClickableImage } from "../atoms";
 import BrowserIframe from "./DetailViewer/browser_iframe";
 import BrowserModal from "./DetailViewer/browser_modal";
 import FullscreenOverlay from "./DetailViewer/fullscreen_overlay"; // Import our new component
-import { IPlan } from "../../types/plan";
-import { useSettingsStore } from "../../store";
-import { RcFile } from "antd/es/upload";
 // Define VNC component props type
 interface VncScreenProps {
   url: string;
@@ -67,7 +67,7 @@ const DetailViewer: React.FC<DetailViewerProps> = ({
 }) => {
   const [internalActiveTab, setInternalActiveTab] = useState<TabType>("live");
   const activeTab = controlledActiveTab ?? internalActiveTab;
-  const [viewMode, setViewMode] = useState<"iframe" | "novnc">("novnc");
+  const [viewMode, setViewMode] = useState<"iframe" | "novnc">("iframe");
   const vncRef = useRef();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -190,7 +190,7 @@ const DetailViewer: React.FC<DetailViewerProps> = ({
     }
 
     // Use server_url from config if set, otherwise default to localhost
-    const serverHost = config.server_url || window.location.hostname;
+    const serverHost = config.server_url || "localhost";
     console.log("config", config);
 
     return (

@@ -40,6 +40,8 @@ def _get_docker_browser_resource_config(
         if novnc_port == -1:
             novnc_port, sock = get_available_port()
             sock.close()
+            novnc_port = 53952
+            print(f">>> Fix novnc_port={novnc_port}")
 
         browser = VncDockerPlaywrightBrowser(
             bind_dir=bind_dir,
