@@ -67,7 +67,7 @@ const DetailViewer: React.FC<DetailViewerProps> = ({
 }) => {
   const [internalActiveTab, setInternalActiveTab] = useState<TabType>("live");
   const activeTab = controlledActiveTab ?? internalActiveTab;
-  const [viewMode, setViewMode] = useState<"iframe" | "novnc">("iframe");
+  const [viewMode, setViewMode] = useState<"iframe" | "novnc">("novnc");
   const vncRef = useRef();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
