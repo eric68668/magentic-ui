@@ -3,7 +3,7 @@
 ######################################
 # Default OpenAI model configuration #
 ######################################
-configs: &client
+model_configs: &client
   provider: autogen_ext.models.openai.OpenAIChatCompletionClient
   config:
     model: xxx
@@ -14,6 +14,12 @@ configs: &client
 ##########################
 # Clients for each agent #
 ##########################
+
+orchestrator_client: *client
+coder_client: *client
+web_surfer_client: *client
+file_surfer_client: *client
+action_guard_client: *client
 
 model_client_configs:
   orchestrator: *client

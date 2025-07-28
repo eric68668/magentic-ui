@@ -1,6 +1,7 @@
 import threading
 from datetime import datetime
 from pathlib import Path
+import traceback
 from typing import Any, List, Optional, Union, Dict
 
 from loguru import logger
@@ -233,6 +234,9 @@ class DatabaseManager:
                     model = existing_model  # Use the updated existing model
                     session.add(model)
                 else:
+                    # bugfix
+                    if model and hasattr(model, "config") and hasattr(model.config, "model_dump"):
+                        model.config = model.config.model_dump()
                     session.add(model)
                 session.commit()
                 session.refresh(model)
@@ -242,7 +246,7 @@ class DatabaseManager:
                     "Error while updating/creating "
                     + str(model_class.__name__)
                     + ": "
-                    + str(e)
+                    + str(traceback.format_exc())
                 )
                 status = False
 

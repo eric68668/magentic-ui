@@ -213,3 +213,4 @@ venv.bak/
 **/pagelogs/
 
 config.yaml
+tests/test_config.py
