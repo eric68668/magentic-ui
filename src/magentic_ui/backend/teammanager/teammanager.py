@@ -4,6 +4,7 @@ import asyncio
 import json
 import logging
 import os
+import traceback
 import time
 from pathlib import Path
 from typing import (
@@ -451,19 +452,22 @@ class TeamManager:
                             files=modified_files,  # Full file data preserved
                         )
                     elif isinstance(message, TextMessage):
-                        if message.metadata.get("type", "") == "browser_address":
-                            novnc_port = int(message.metadata["novnc_port"])
-                            playwright_port = int(message.metadata["playwright_port"])
-                            logger.info(
-                                f"Browser noVNC address: novnc_port={novnc_port}, playwright_port={playwright_port}"
-                            )
-                            with suppress(Exception):
-                                novnc_proxy.register_browser(
-                                    message.metadata["session_id"],
-                                    novnc_port,
-                                    playwright_port,
+                        try:
+                            if message.metadata.get("type", "") == "browser_address":
+                                novnc_port = int(message.metadata["novnc_port"])
+                                playwright_port = int(message.metadata["playwright_port"])
+                                logger.info(
+                                    f"Browser noVNC address: novnc_port={novnc_port}, playwright_port={playwright_port}"
                                 )
-                            yield message
+                                with suppress(Exception):
+                                    novnc_proxy.register_browser(
+                                        message.metadata["session_id"],
+                                        novnc_port,
+                                        playwright_port,
+                                    )
+                        except:
+                            logger.error(f"Error processing message: {message}, {traceback.format_exc()}")
+                        yield message
                     else:
                         yield message
 

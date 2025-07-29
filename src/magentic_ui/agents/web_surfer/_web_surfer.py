@@ -1206,7 +1206,7 @@ class WebSurfer(BaseChatAgent, Component[WebSurferConfig]):
                 "o4",
             ]:
                 create_args = {
-                    # "tool_choice": "required",
+                    "tool_choice": "required",
                 }
                 if self.multiple_tools_per_call:
                     create_args["parallel_tool_calls"] = True
