@@ -35,6 +35,8 @@ from ..datamodel.types import EnvironmentVariable, LLMCallEventMessage, TeamResu
 from ..datamodel.db import Run
 from ..utils.utils import get_modified_files, decompress_state
 from ...tools.playwright.browser.utils import get_browser_resource_config
+from ...backend.web.routes.novnc_proxy import novnc_proxy
+from contextlib import suppress
 
 
 class RunEventLogger(logging.Handler):
@@ -271,6 +273,12 @@ class TeamManager:
                     else:
                         config_params["browser_headless"] = False
                 magentic_ui_config = MagenticUIConfig(**config_params)  # type: ignore
+                logger.info(
+                    (
+                        f"MagenticUIConfig: \n{magentic_ui_config.model_dump_json(indent=4)}"
+                        f"config_params: \n{json.dumps(config_params, indent=4)}"
+                    )
+                )
 
                 self.team = cast(
                     Team,
@@ -442,6 +450,20 @@ class TeamManager:
                             duration=time.time() - start_time,
                             files=modified_files,  # Full file data preserved
                         )
+                    elif isinstance(message, TextMessage):
+                        if message.metadata.get("type", "") == "browser_address":
+                            novnc_port = int(message.metadata["novnc_port"])
+                            playwright_port = int(message.metadata["playwright_port"])
+                            logger.info(
+                                f"Browser noVNC address: novnc_port={novnc_port}, playwright_port={playwright_port}"
+                            )
+                            with suppress(Exception):
+                                novnc_proxy.register_browser(
+                                    message.metadata["session_id"],
+                                    novnc_port,
+                                    playwright_port,
+                                )
+                            yield message
                     else:
                         yield message
 

@@ -1,5 +1,6 @@
 # api/app.py
 import os
+import json
 import yaml
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator, Any
@@ -22,6 +23,7 @@ from .routes import (
     teams,
     validation,
     ws,
+    novnc_proxy,
 )
 
 # Initialize application
@@ -44,6 +46,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
             logger.info(f"Loading config from file: {config_file}")
             with open(config_file, "r") as f:
                 config = yaml.safe_load(f)
+            logger.info(f"Config loaded: {json.dumps(config, indent=4)}")
         else:
             logger.info("No config file provided, using defaults.")
 
@@ -153,6 +156,13 @@ api.include_router(
     settingsroute.router,
     prefix="/settings",
     tags=["settings"],
+    responses={404: {"description": "Not found"}},
+)
+
+api.include_router(
+    novnc_proxy.router,
+    prefix="/novnc",
+    tags=["novnc"],
     responses={404: {"description": "Not found"}},
 )
 
